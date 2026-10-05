@@ -100,13 +100,29 @@ fun SumScreen(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(28.dp))
             Button(
-                onClick = { result = "$xInput, $nInput" },
+                onClick = { result = checkInput(xInput, nInput) },
                 colors = ButtonDefaults.buttonColors(containerColor = AppPurple)
             ) {
                 Text("ОК")
             }
         }
     }
+}
+
+fun checkInput(xRaw: String, nRaw: String): String {
+    val xText = xRaw.trim().replace(',', '.')
+    val nText = nRaw.trim()
+    if (xText.isEmpty() || nText.isEmpty()) {
+        return "Введите x и n"
+    }
+    if (xText.toDoubleOrNull() == null) {
+        return "Некорректное число x"
+    }
+    val n = nText.toIntOrNull()
+    if (n == null || n < 1 || nText.contains('.') || nText.contains(',')) {
+        return "n должно быть натуральным числом"
+    }
+    return "Данные приняты"
 }
 
 @Composable
