@@ -93,7 +93,16 @@ fun SumScreen(modifier: Modifier = Modifier) {
                 onValueChange = { nInput = it },
                 keyboardType = KeyboardType.Number
             )
-            Spacer(modifier = Modifier.height(28.dp))
+            Text(
+                text = "Сумма x / (4^k + 5^(k+2)), k = 1..n",
+                fontSize = 14.sp,
+                color = Color.Gray,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = result,
                 fontSize = 20.sp,
