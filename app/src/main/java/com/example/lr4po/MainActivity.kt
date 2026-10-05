@@ -127,7 +127,13 @@ fun calculate(xRaw: String, nRaw: String): String {
     var sum = 0.0
     for (k in 1..n) {
         val denominator = 4.0.pow(k) + 5.0.pow(k + 2)
+        if (!denominator.isFinite() || denominator == 0.0) {
+            return "n слишком большое для вычисления"
+        }
         sum += x / denominator
+    }
+    if (!sum.isFinite()) {
+        return "n слишком большое для вычисления"
     }
     return formatNumber(sum)
 }
