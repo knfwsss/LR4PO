@@ -1,6 +1,8 @@
 package com.example.lr4po
 
 import android.os.Bundle
+import java.math.BigDecimal
+import java.math.RoundingMode
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -36,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lr4po.ui.theme.LR4POTheme
+import kotlin.math.pow
 
 private val AppPurple = Color(0xFF6200EE)
 private val FieldTeal = Color(0xFF03DAC5)
@@ -100,7 +103,7 @@ fun SumScreen(modifier: Modifier = Modifier) {
             )
             Spacer(modifier = Modifier.height(28.dp))
             Button(
-                onClick = { result = checkInput(xInput, nInput) },
+                onClick = { result = calculate(xInput, nInput) },
                 colors = ButtonDefaults.buttonColors(containerColor = AppPurple)
             ) {
                 Text("ОК")
@@ -109,20 +112,31 @@ fun SumScreen(modifier: Modifier = Modifier) {
     }
 }
 
-fun checkInput(xRaw: String, nRaw: String): String {
+fun calculate(xRaw: String, nRaw: String): String {
     val xText = xRaw.trim().replace(',', '.')
     val nText = nRaw.trim()
     if (xText.isEmpty() || nText.isEmpty()) {
         return "Введите x и n"
     }
-    if (xText.toDoubleOrNull() == null) {
-        return "Некорректное число x"
-    }
+    val x = xText.toDoubleOrNull() ?: return "Некорректное число x"
     val n = nText.toIntOrNull()
     if (n == null || n < 1 || nText.contains('.') || nText.contains(',')) {
         return "n должно быть натуральным числом"
     }
-    return "Данные приняты"
+
+    var sum = 0.0
+    for (k in 1..n) {
+        val denominator = 4.0.pow(k) + 5.0.pow(k + 2)
+        sum += x / denominator
+    }
+    return formatNumber(sum)
+}
+
+private fun formatNumber(value: Double): String {
+    return BigDecimal.valueOf(value)
+        .setScale(6, RoundingMode.HALF_UP)
+        .stripTrailingZeros()
+        .toPlainString()
 }
 
 @Composable
